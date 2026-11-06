@@ -9,6 +9,18 @@
   const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* Smooth scroll */
+  let lenis = null;
+  if (window.Lenis && !reduceMotion) {
+    lenis = new window.Lenis({
+      autoRaf: true,
+      duration: 1.15,
+      smoothWheel: true,
+      wheelMultiplier: 0.9,
+      anchors: { offset: -84 }
+    });
+  }
+
   /* Coordonnées */
   $$("[data-contact-email]").forEach((link) => {
     link.href = `mailto:${email}`;
@@ -52,25 +64,75 @@
 
   if (hero && !reduceMotion) {
     let ticking = false;
+    let pointerX = 0;
+    let pointerY = 0;
+
     const parallax = () => {
       ticking = false;
       const y = window.scrollY;
       if (y > window.innerHeight * 1.2) return;
-      if (heroMedia) heroMedia.style.transform = `translate3d(0, ${y * 0.16}px, 0)`;
+      const driftX = pointerX * 16;
+      const driftY = pointerY * 12;
+      if (heroMedia) {
+        heroMedia.style.transform = `translate3d(${driftX}px, ${y * 0.16 + driftY}px, 0)`;
+      }
       if (heroContent) {
         const fade = Math.min(1, Math.max(0, (y - window.innerHeight * 0.15) / (window.innerHeight * 0.7)));
         heroContent.style.opacity = String(1 - fade);
+        heroContent.style.transform = `translate3d(${-driftX * 0.32}px, ${-driftY * 0.32}px, 0)`;
       }
     };
+
+    const requestParallax = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(parallax);
+    };
+
+    window.addEventListener("scroll", requestParallax, { passive: true });
+    hero.addEventListener("pointermove", (event) => {
+      if (event.pointerType !== "mouse") return;
+      const rect = hero.getBoundingClientRect();
+      pointerX = (event.clientX - rect.left) / rect.width - 0.5;
+      pointerY = (event.clientY - rect.top) / rect.height - 0.5;
+      requestParallax();
+    });
+    hero.addEventListener("pointerleave", () => {
+      pointerX = 0;
+      pointerY = 0;
+      requestParallax();
+    });
+  }
+
+  /* Marquee réactif au scroll */
+  const marqueeTrack = $(".marquee-track");
+  if (marqueeTrack && !reduceMotion) {
+    marqueeTrack.style.animation = "none";
+    let offset = 0;
+    let boost = 0;
+    let lastScroll = window.scrollY;
+
+    const moveMarquee = () => {
+      const half = marqueeTrack.scrollWidth / 2;
+      offset += 0.55 + Math.abs(boost) * 0.14;
+      if (half > 0 && offset >= half) offset -= half;
+      const skew = Math.max(-3.5, Math.min(3.5, boost * 0.12));
+      marqueeTrack.style.transform = `translate3d(${-offset}px, 0, 0) skewX(${skew}deg)`;
+      boost *= 0.9;
+      requestAnimationFrame(moveMarquee);
+    };
+
     window.addEventListener(
       "scroll",
       () => {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(parallax);
+        const y = window.scrollY;
+        boost = Math.max(-26, Math.min(26, boost + (y - lastScroll) * 0.06));
+        lastScroll = y;
       },
       { passive: true }
     );
+
+    moveMarquee();
   }
 
   /* Curseur */
@@ -117,6 +179,7 @@
   const header = $("#header");
   const floatingBook = $(".floating-book");
   const bookingSection = $("#reserver");
+  const progressBar = $(".scroll-progress");
   let bookingInView = false;
 
   const updateHeader = () => {
@@ -126,6 +189,10 @@
       "visible",
       window.scrollY > window.innerHeight * 0.85 && !nearFooter && !bookingInView
     );
+    if (progressBar) {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.transform = `scaleX(${max > 0 ? Math.min(1, window.scrollY / max) : 0})`;
+    }
   };
   updateHeader();
   window.addEventListener("scroll", updateHeader, { passive: true });
@@ -147,6 +214,7 @@
 
   const closeMenu = () => {
     document.body.classList.remove("nav-open", "locked");
+    lenis?.start();
     menuToggle?.setAttribute("aria-expanded", "false");
     menuToggle?.setAttribute("aria-label", "Ouvrir le menu");
   };
@@ -154,6 +222,8 @@
   menuToggle?.addEventListener("click", () => {
     const isOpen = document.body.classList.toggle("nav-open");
     document.body.classList.toggle("locked", isOpen);
+    if (isOpen) lenis?.stop();
+    else lenis?.start();
     menuToggle.setAttribute("aria-expanded", String(isOpen));
     menuToggle.setAttribute("aria-label", isOpen ? "Fermer le menu" : "Ouvrir le menu");
   });
@@ -303,6 +373,7 @@
     lightbox.classList.add("open");
     lightbox.setAttribute("aria-hidden", "false");
     document.body.classList.add("locked");
+    lenis?.stop();
     $("#lbClose").focus();
   };
 
@@ -310,6 +381,7 @@
     lightbox.classList.remove("open");
     lightbox.setAttribute("aria-hidden", "true");
     document.body.classList.remove("locked");
+    lenis?.start();
     lastFocused?.focus();
   };
 

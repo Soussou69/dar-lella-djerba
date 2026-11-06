@@ -22,6 +22,7 @@ mentions-legales.html      Mentions légales, confidentialité et conditions
 assets/css/style.css       Styles du site
 assets/js/config.js        Coordonnées à personnaliser
 assets/js/main.js          Menu, dates, formulaire, galerie, animations
+assets/js/vendor/lenis.min.js  Défilement fluide (Lenis, MIT)
 assets/img/                Photographies
 vercel.json                Configuration de déploiement
 ```
@@ -66,6 +67,9 @@ Photos d'ambiance issues de [Pexels](https://www.pexels.com/) (licence Pexels, u
 - HTML/CSS/JavaScript statiques.
 - Google Fonts : Cormorant Garamond + Manrope.
 - Galerie avec lightbox clavier, menu mobile, animations au scroll, formulaire sans backend.
-- Héros cinématique : diaporama de photos avec travelling lent, titre révélé ligne par ligne, grain argentique, parallaxe au scroll et curseur personnalisé sur desktop.
+- Héros cinématique : diaporama de photos avec travelling lent, titre révélé ligne par ligne, grain argentique, parallaxe au scroll et au curseur.
+- Défilement inertiel avec [Lenis](https://lenis.dev/) (MIT) : molette fluide, liens d'ancrage conservés, désactivé si `prefers-reduced-motion`.
+- Bandeau défilant dont la vitesse et l'inclinaison réagissent au scroll.
+- Titres de section révélés par masque, barre de progression de lecture, curseur personnalisé sur desktop.
 - Respect de `prefers-reduced-motion` (animations désactivées) et allègement sur mobile.
 - Aucun cookie, aucun outil de tracking.
