@@ -66,4 +66,6 @@ Photos d'ambiance issues de [Pexels](https://www.pexels.com/) (licence Pexels, u
 - HTML/CSS/JavaScript statiques.
 - Google Fonts : Cormorant Garamond + Manrope.
 - Galerie avec lightbox clavier, menu mobile, animations au scroll, formulaire sans backend.
+- Héros cinématique : diaporama de photos avec travelling lent, titre révélé ligne par ligne, grain argentique, parallaxe au scroll et curseur personnalisé sur desktop.
+- Respect de `prefers-reduced-motion` (animations désactivées) et allègement sur mobile.
 - Aucun cookie, aucun outil de tracking.

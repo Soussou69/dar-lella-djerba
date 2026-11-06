@@ -24,6 +24,95 @@
     el.textContent = new Date().getFullYear();
   });
 
+  /* Hero cinematique */
+  const hero = $(".hero");
+  const heroMedia = $(".hero-media");
+  const heroContent = $(".hero-content");
+  const heroSlides = $$(".hero-slide");
+  let activeSlide = 0;
+  let heroVisible = true;
+
+  if (heroSlides.length > 1 && !reduceMotion) {
+    setInterval(() => {
+      if (document.hidden || !heroVisible) return;
+      heroSlides[activeSlide].classList.remove("is-active");
+      activeSlide = (activeSlide + 1) % heroSlides.length;
+      heroSlides[activeSlide].classList.add("is-active");
+    }, 6500);
+  }
+
+  if (hero && "IntersectionObserver" in window) {
+    new IntersectionObserver(
+      ([entry]) => {
+        heroVisible = entry.isIntersecting;
+      },
+      { threshold: 0.05 }
+    ).observe(hero);
+  }
+
+  if (hero && !reduceMotion) {
+    let ticking = false;
+    const parallax = () => {
+      ticking = false;
+      const y = window.scrollY;
+      if (y > window.innerHeight * 1.2) return;
+      if (heroMedia) heroMedia.style.transform = `translate3d(0, ${y * 0.16}px, 0)`;
+      if (heroContent) {
+        const fade = Math.min(1, Math.max(0, (y - window.innerHeight * 0.15) / (window.innerHeight * 0.7)));
+        heroContent.style.opacity = String(1 - fade);
+      }
+    };
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(parallax);
+      },
+      { passive: true }
+    );
+  }
+
+  /* Curseur */
+  const cursor = $(".cursor-ring");
+  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (cursor && finePointer && !reduceMotion) {
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let cursorVisible = false;
+
+    const renderCursor = () => {
+      currentX += (targetX - currentX) * 0.18;
+      currentY += (targetY - currentY) * 0.18;
+      cursor.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+      requestAnimationFrame(renderCursor);
+    };
+
+    document.addEventListener("mousemove", (event) => {
+      targetX = event.clientX;
+      targetY = event.clientY;
+      if (!cursorVisible) {
+        cursorVisible = true;
+        cursor.classList.add("is-on");
+        renderCursor();
+      }
+    });
+
+    document.addEventListener("mouseover", (event) => {
+      cursor.classList.toggle(
+        "is-link",
+        Boolean(event.target.closest("a, button, summary, input, select, textarea"))
+      );
+    });
+
+    document.addEventListener("mouseleave", () => {
+      cursorVisible = false;
+      cursor.classList.remove("is-on");
+    });
+  }
+
   /* Header */
   const header = $("#header");
   const floatingBook = $(".floating-book");

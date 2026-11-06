@@ -58,6 +58,13 @@
 <body id="top">
   <a class="skip-link" href="#main">Aller au contenu</a>
 
+  <div class="page-curtain" aria-hidden="true">
+    <span class="page-curtain-word">Dar Lella</span>
+    <span class="page-curtain-line"></span>
+  </div>
+
+  <div class="cursor-ring" aria-hidden="true"></div>
+
   <header class="site-header" id="header">
     <a class="brand" href="#top" aria-label="Dar Lella — retour en haut">
       <svg class="brand-mark" viewBox="0 0 40 48" fill="none" aria-hidden="true">
@@ -84,8 +91,22 @@
 
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
-      <img class="hero-bg" src="assets/img/hero.jpg" alt="Le patio de Dar Lella, sa piscine et ses orangers" fetchpriority="high">
+      <div class="hero-media" aria-hidden="true">
+        <figure class="hero-slide is-active">
+          <img src="assets/img/hero.jpg" alt="" fetchpriority="high">
+        </figure>
+        <figure class="hero-slide">
+          <img src="assets/img/pool.jpg" alt="" loading="lazy">
+        </figure>
+        <figure class="hero-slide">
+          <img src="assets/img/patio.jpg" alt="" loading="lazy">
+        </figure>
+        <figure class="hero-slide">
+          <img src="assets/img/arches.jpg" alt="" loading="lazy">
+        </figure>
+      </div>
       <div class="hero-shade"></div>
+      <div class="hero-grain" aria-hidden="true"></div>
       <div class="hero-frame" aria-hidden="true"></div>
 
       <div class="container hero-content">
@@ -94,7 +115,10 @@
           <p class="hero-coord">33°48′ N — 10°59′ E</p>
         </div>
 
-        <h1 id="hero-title">Une piscine.<br><em>Aucun regard.</em></h1>
+        <h1 id="hero-title">
+          <span class="hero-line"><span>Une piscine.</span></span>
+          <span class="hero-line"><span><em>Aucun regard.</em></span></span>
+        </h1>
 
         <div class="hero-bottom">
           <p class="hero-intro">Quatre suites, un patio djerbien et un bassin à l'abri des murs. Ici, le seul vis-à-vis, c'est le ciel.</p>
