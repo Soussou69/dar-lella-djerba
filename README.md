@@ -1,6 +1,6 @@
 # Dar Lella — Djerba
 
-Site de location directe d'un houch privé avec piscine sans vis-à-vis à Djerba.
+Site de location directe d'un houch privé avec piscine sans vis-à-vis à Chebabya, Djerba.
 Direction artistique éditoriale, responsive, sans framework et sans dépendance serveur.
 
 **URL de production :** <https://dar-lella-djerba.vercel.app>
@@ -33,7 +33,7 @@ vercel.json                Configuration de déploiement
 2. **Nom et textes** — remplacer « Dar Lella » et adapter les descriptions si nécessaire.
 3. **Chiffres et équipements** — 4 suites, 8 hôtes, bassin de 12 m, terrain de 1 800 m², équipements et services.
 4. **Tarifs et conditions** — section `#tarifs`, FAQ et `mentions-legales.html` (acompte, annulation, caution, taxe de séjour).
-5. **Adresse** — la page indique Midoun. Ajuster les distances et l'adresse exacte.
+5. **Adresse** — la page indique Chebabya (près d'Aghir et de Midoun). Ajuster les distances et l'adresse exacte.
 6. **Photographies** — les visuels actuels sont des **photos d'ambiance Pexels**, pas les photos du houch. Les remplacer par les photos réelles avant toute promotion. La mention figure déjà dans les mentions légales.
 7. **Mentions légales** — compléter l'identité de l'éditeur, l'adresse postale et les informations fiscales.
 8. **Domaine** — mettre à jour `canonical`, Open Graph, `robots.txt`, `sitemap.xml` et le JSON-LD si un domaine personnalisé est utilisé.
