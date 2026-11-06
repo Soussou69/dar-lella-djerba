@@ -3,7 +3,8 @@
 Site de location directe d'un houch privé avec piscine sans vis-à-vis à Djerba.
 Direction artistique éditoriale, responsive, sans framework et sans dépendance serveur.
 
-**URL de production :** à compléter après déploiement Vercel.
+**URL de production :** <https://dar-lella-djerba.vercel.app>
+**Dépôt GitHub :** <https://github.com/Soussou69/dar-lella-djerba>
 
 ## Lancer le site en local
 
